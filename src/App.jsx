@@ -1,14 +1,12 @@
-import './App.css'
-import AllRoutes from './Routes/AllRoutes'
-
+import React from 'react'
+import AllRoutes from './Routes/AllRoutes';
+import "./App.css"
 function App() {
-
-
   return (
-    <>
-      <AllRoutes/>
-    </>
-  )
+    <div>
+      <AllRoutes />
+    </div>
+  );
 }
 
 export default App

@@ -1,15 +1,13 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import { ChevronDownIcon } from "lucide-react";
-import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
+import Navbar from "../components/Header";
+import Footer from "../components/Footer";
 
 function ContactPage() {
   return (
     <div className="bg-[#f8f1ee] min-h-screen ">
-      <Navbar />
-
+      <Navbar/>
       <div className="mt-10 px-4">
         <div className="mx-auto flex max-w-7xl items-center">
           <Link
@@ -127,6 +125,7 @@ function ContactPage() {
           </div>
         </form>
       </div>
+
       <Footer />
     </div>
   );

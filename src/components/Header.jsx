@@ -1,24 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "/public/assets/logo.png";
-import { TbInfoCircle, TbMessage, TbSettings, TbShare3, TbShieldLock } from "react-icons/tb";
+import {
+  TbInfoCircle,
+  TbMessage,
+  TbSettings,
+  TbShare3,
+  TbShieldLock,
+} from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { FaPaintBrush, FaTextHeight } from "react-icons/fa";
 import { RiMenu2Line } from "react-icons/ri";
 
-
-function Navbar() {
+function Navbar({ isOpenSidebar, toggleSidebar }) {
   const [activeLang, setActiveLang] = useState("en");
   const [activefont, setActivefont] = useState("-");
   const [isOpen, setIsOpen] = useState(false);
+const dropdownRefs = useRef({});
+  const dropdownMenuRefs = useRef({});
+  const [openDropdown, setOpenDropdown] = useState(null);
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          openDropdown &&
+          !dropdownRefs.current[openDropdown]?.contains(event.target) &&
+          !dropdownMenuRefs.current[openDropdown]?.contains(event.target)
+        ) {
+          setOpenDropdown(null);
+        }
+      };
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [openDropdown]);
 
   return (
-    <div className="bg-[#f8f1ee] relative shadow-md px-4">
+    <div className="bg-[#f8f1ee] shadow-md px-4 sticky z-50 xs:top-0 sm:top-0 ">
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between py-3 h-20"
+        className="mx-auto flex max-w-7xl items-center justify-between py-3 h-[10vh]"
       >
         <Link className="" to="/">
-          <img alt="" src={logo} className="sm:h-[15%] sm:w-[60%] xs:h-[20%] xs:w-[65%]" />
+          <img
+            alt=""
+            src={logo}
+            className="sm:h-[15%] sm:w-[60%] xs:h-[20%] xs:w-[65%]"
+          />
         </Link>
 
         <div className="hidden md:flex lg:flex-1 lg:justify-end items-center justify-center gap-5">
@@ -48,7 +76,10 @@ function Navbar() {
             <TbSettings className="text-[#c05e36] w-6 h-6" />
           </button>
           {isOpen && (
-            <div className="absolute right-20 top-16 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
+            <div
+              className="absolute md:right-16 lg:right-5  md:top-24 lg:top-16 w-64 bg-white shadow-lg rounded-lg p-4 z-50"
+              ref={(el) => (dropdownRefs.current = el)}
+            >
               {/* Menu Content */}
               <ul className="mt-2 space-y-5 flex flex-col">
                 <li className="flex items-center gap-3 hover:text-[#c05e36] transition-colors">
@@ -102,7 +133,7 @@ function Navbar() {
           )}
         </div>
         <div className="hidden xs:flex sm:flex md:hidden">
-          <button>
+          <button onClick={toggleSidebar}>
             <RiMenu2Line className="text-[#c05e36] w-5 h-5 me-5" />
           </button>
         </div>

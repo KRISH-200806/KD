@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Filterbar() {
+function FilterModel() {
   const locations = ["ગઢપુર", "વીરપુર", "ભૂજ"];
   const adjectives = ["મીઠું", "મધુર", "વિચિત્ર"];
   const specialNames = ["ઘનશ્યામ", "નારાયણ", "હરિપ્રસાદ"];
@@ -25,7 +25,7 @@ function Filterbar() {
     }));
   };
   return (
-    <div className="w-80 h-[80vh] sticky top-0 z-30 bg-white shadow-xl p-2 rounded-lg hidden xs:hidden sm:hidden md:flex flex-col">
+    <div className="w-80 h-[80vh] sticky top-0 z-30 bg-white shadow-xl p-2 rounded-lg">
       <div className="overflow-y-auto h-full hide-scrollbar ">
         {/* Creator Section */}
         <div className="border-b border-gray-200 mb-2">
@@ -497,4 +497,4 @@ function Filterbar() {
   );
 }
 
-export default Filterbar;
+export default FilterModel;
