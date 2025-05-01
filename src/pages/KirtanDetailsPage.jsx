@@ -114,7 +114,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p> પ્રસંગ: - {singlekirtan.author} </p>
+              <p> પ્રસંગ: - {singlekirtan.occasion || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -122,7 +122,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>સ્થાન : - {singlekirtan.author} </p>
+              <p>સ્થાન : - {singlekirtan.location || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -130,7 +130,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>કીર્તન પ્રકાર : - {singlekirtan.author} </p>
+              <p>કીર્તન પ્રકાર : - {singlekirtan.type || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -138,7 +138,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>વિશેષણ : - {singlekirtan.author} </p>
+              <p>વિશેષણ : - {singlekirtan.attribute || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -146,7 +146,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>વિશેષ નામ : - {singlekirtan.author} </p>
+              <p>વિશેષ નામ : - {singlekirtan.specialName || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -154,7 +154,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>પુસ્તક : - {singlekirtan.author} </p>
+              <p>પુસ્તક : - {singlekirtan.book || "-"} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
@@ -162,7 +162,7 @@ const handlePadChange = (padNumber) => {
               <img src="#" alt="" />
             </div>
             <div>
-              <p>ભાવ : - {singlekirtan.author} </p>
+              <p>ભાવ : - {singlekirtan.sentiment || "-"} </p>
             </div>
           </div>
         </div>
