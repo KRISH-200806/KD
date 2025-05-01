@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 function ContactPage() {
   return (
     <div className="bg-[#f8f1ee] min-h-screen ">
-      <Navbar/>
+      <Navbar />
       <div className="mt-10 px-4">
         <div className="mx-auto flex max-w-7xl items-center">
           <Link

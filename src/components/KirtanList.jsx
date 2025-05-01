@@ -10,8 +10,9 @@ const KirtanList = () => {
   
   const getkirtanlist = async () => {
     try {
-      const res = await axios.get("https://kirtanavali.ssgd.org/api/");
-      console.log(res);
+      const res = await axios.get("http://localhost:3000/kirtans");
+      console.log(res.data);
+      setkirtans(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -19,7 +20,9 @@ const KirtanList = () => {
 
   useEffect(() => {
     getkirtanlist()
-  },[])
+  }, [])
+  
+
   return (
     <div className="flex-1 ">
       <div className="p-4">
@@ -43,16 +46,14 @@ const KirtanList = () => {
                   </div>
                 </div>
                 <div className="bg-slate-200 w-24 h-6 rounded-full flex items-center justify-center xs:mt-2 xs:ms-11 sm:ms-0 sm:mt-0">
-                  {kirtan.count}
+                  {kirtan.current_pad}/{kirtan.total_pads}
                 </div>
               </Link>
             </div>
           ))}
         </ul>
       </div>
-      <div>
-        pagination
-      </div>
+      <div>pagination</div>
     </div>
   );
 };

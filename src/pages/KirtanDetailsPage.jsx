@@ -1,24 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Header";
-import { kirtans } from "../data/kirtan";
+
 import { BsArrowLeft } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 function KirtanDetailsPage() {
   const { id } = useParams();
-  const kirtan = kirtans.find((item) => item.id === parseInt(id));
+  const [singlekirtan, setSinglekirtan] = useState(null);
   const [activePad, setActivePad] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [currentContent, setCurrentContent] = useState("");
+  useEffect(() => {
+    const fetchKirtan = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`http://localhost:3000/kirtans/${id}`);
+        console.log(res.data);
+        setSinglekirtan(res.data);
+        setCurrentContent(res.data.song); // song key પરથી value શરુમાં બતાવવી
+        setActivePad(res.data.current_pad); // default pad
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
 
-  if (!kirtan) {
+    fetchKirtan();
+  }, [id]);
+
+  if (loading) {
+    return <div className="p-4 text-center">Loading...</div>;
+  }
+
+  if (!singlekirtan) {
     return (
       <div className="p-4 text-center text-red-500">Kirtan not found!</div>
     );
   }
 
   // Parse the count to get total number of pads
-  const totalPads = parseInt(kirtan.count.split("/")[1]) || 0;
+  const totalPads = singlekirtan.total_pads;
+  const currentPad = singlekirtan.current_pad;
+
+const handlePadChange = (padNumber) => {
+  setActivePad(padNumber);
+  if (singlekirtan?.pad_content?.[padNumber - 1]) {
+    setCurrentContent(singlekirtan.pad_content[padNumber - 1]);
+  }
+};
 
   // Generate pad buttons dynamically
   const renderPadButtons = () => {
@@ -30,7 +63,7 @@ function KirtanDetailsPage() {
           className={`px-5 py-2 cursor-pointer ${
             activePad === i ? "bg-[#FFF4EF]" : "bg-white"
           } text-sm font-semibold transition duration-200 hover:bg-[#FFF4EF] rounded-full`}
-          onClick={() => setActivePad(i)}
+          onClick={() => handlePadChange(i)}
         >
           પદ-{i}
         </span>
@@ -53,7 +86,7 @@ function KirtanDetailsPage() {
             <BsArrowLeft className="w-5 h-5 text-[#c05e36]" />
           </Link>
           <h1 className="xs:text-xl sm:text-2xl font-bold text-[#c05e36] text-center m-auto">
-            {kirtan.title}
+            {singlekirtan.title}
           </h1>
           <span className="flex float-end">
             <FaRegStar className="text-[#c05e36] w-5 h-5" />
@@ -64,85 +97,77 @@ function KirtanDetailsPage() {
         </div>
         <div className="max-w-7xl w-full mx-auto mt-5 bg-white rounded-2xl">
           <p className="font-gujarati2 text-2xl text-justify flex justify-center md:w-2/3 md:mx-auto p-6">
-            ધન્ય ધન્ય ઓઝત ધન્ય ધન્ય છે રે એના જેવું તીરથ કોણ અન્ય છે રે. ટેક.
-            <br />
-            મેતા નરસીંહનો સુત રવજી કહું રે તેને શ્રીજીએ કરાવી સમાધી બહુરે. ધન્ય.
-            ૧<br />
-            રાખી એને ઓઝત તણી તીરમાં રે ફેરવે છે ચારેકોર નીરમાં રે. ધન્ય. ર<br />
-            એમ રવજી ઉપર રંગ ઢાળીઓ રે સમાધીનો અતિ રેડ વાળીયો રે. ધન્ય. ૩<br />
-            જેમાં નાયા હશે હીલોળા દૈ દઇ રે ગાયા કીર્તન ત્યાં તાળયું લઇ લઇ રે.
-            ધન્ય. ૪<br />
-            જગદીશ કહે એમ ઓઝતે ઘણી રે કરી હરિએ લીલા ન જાયે ગણી રે. ધન્ય. પ
+            {singlekirtan.song && currentContent}
           </p>
         </div>
         <div className="grid sm:grid-cols-1 xs:grid-cols-1 md:grid-cols-2 gap-4 mt-3">
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
             <div>
-              <img src="" alt="" />
+              <img src="#" alt="" />
             </div>
             <div>
-              <p>રચિયતા : - {kirtan.author} </p>
-            </div>
-          </div>
-          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
-            <div>
-              <img src="" alt="" />
-            </div>
-            <div>
-              <p> પ્રસંગ: - {kirtan.author} </p>
+              <p>રચિયતા : - {singlekirtan.author} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
             <div>
-              <img src="" alt="" />
+              <img src="#" alt="" />
             </div>
             <div>
-              <p>સ્થાન : - {kirtan.author} </p>
-            </div>
-          </div>
-          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
-            <div>
-              <img src="" alt="" />
-            </div>
-            <div>
-              <p>કીર્તન પ્રકાર : - {kirtan.author} </p>
+              <p> પ્રસંગ: - {singlekirtan.author} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
             <div>
-              <img src="" alt="" />
+              <img src="#" alt="" />
             </div>
             <div>
-              <p>વિશેષણ : - {kirtan.author} </p>
-            </div>
-          </div>
-          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
-            <div>
-              <img src="" alt="" />
-            </div>
-            <div>
-              <p>વિશેષ નામ : - {kirtan.author} </p>
+              <p>સ્થાન : - {singlekirtan.author} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
             <div>
-              <img src="" alt="" />
+              <img src="#" alt="" />
             </div>
             <div>
-              <p>પુસ્તક : - {kirtan.author} </p>
+              <p>કીર્તન પ્રકાર : - {singlekirtan.author} </p>
             </div>
           </div>
           <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
             <div>
-              <img src="" alt="" />
+              <img src="#" alt="" />
             </div>
             <div>
-              <p>ભાવ : - {kirtan.author} </p>
+              <p>વિશેષણ : - {singlekirtan.author} </p>
+            </div>
+          </div>
+          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
+            <div>
+              <img src="#" alt="" />
+            </div>
+            <div>
+              <p>વિશેષ નામ : - {singlekirtan.author} </p>
+            </div>
+          </div>
+          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
+            <div>
+              <img src="#" alt="" />
+            </div>
+            <div>
+              <p>પુસ્તક : - {singlekirtan.author} </p>
+            </div>
+          </div>
+          <div className="bg-white w-full py-2 flex rounded shadow-md px-3">
+            <div>
+              <img src="#" alt="" />
+            </div>
+            <div>
+              <p>ભાવ : - {singlekirtan.author} </p>
             </div>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
