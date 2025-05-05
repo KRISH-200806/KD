@@ -7,37 +7,7 @@ import Filterbar from "../components/Filterbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-
-// Import icons for pagination
-const ChevronLeftIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="size-5"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-  >
-    <path
-      fillRule="evenodd"
-      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
-
-const ChevronRightIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="size-5"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-  >
-    <path
-      fillRule="evenodd"
-      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 function HomePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -199,22 +169,22 @@ function HomePage() {
 
       <div className="w-full flex-grow bg-[#f8f1ee] overflow-y-auto h-[80vh] hide-scrollbar">
         <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <hr className="h-[2px] w-full max-w-7xl mx-auto bg-slate-200" />
+
         <Filterbar
           selectedFilters={selectedFilters}
           setSelectedFilters={setSelectedFilters}
         />
-        <div className="flex flex-1 w-full max-w-7xl mx-auto mt-5">
-          <div className="w-full">
-            <div className="bg-slate-200 w-full max-w-[80rem] rounded-full mx-auto h-10 sticky z-30 top-0 flex items-center">
+        <div className="flex flex-1 w-full max-w-7xl mx-auto bg-white mt-5">
+          <div className="w-full bg-white">
+            <div className="bg-slate-200 w-full max-w-[80rem] mx-auto h-10 sticky z-30 top-0 flex items-center ">
               {kirtans.length > 0 && (
-                <p className="text-lg font-semibold bg-white p-1 rounded-full ms-6 w-10 h-10 flex items-center justify-center">
+                <p className="text-lg font-semibold bg-white p-1 rounded-full ms-6 w-8 h-8 flex items-center justify-center">
                   <p>{kirtans[0].first_character}</p>
                 </p>
               )}
             </div>
 
-            <div className="p-4">
+            <div className="pt-2">
               {loading ? (
                 <div className="flex justify-center items-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -224,20 +194,20 @@ function HomePage() {
               ) : (
                 <ul className="divide-y divide-gray-200 space-y-2">
                   {kirtans.map((kirtan) => (
-                    <div key={kirtan.id} className="p-4 bg-white rounded">
+                    <div key={kirtan.id} className="p-3 bg-white rounded">
                       <Link
                         className="xs:block sm:block md:flex md:justify-between"
                         to={`/kirtan/${kirtan.song_code}`}
                       >
                         <div className="flex">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                          <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center mr-3">
                             {kirtan.first_character}
                           </div>
                           <div>
-                            <h2 className="font-gujarati2 pe-3 truncate whitespace-nowrap overflow-hidden max-w-[250px] lg:max-w-[500px] xs:pe-4 sm:pe-0 sm:max-w-[200px] md:max-w-[300px]">
+                            <h2 className="font-normal text-lg pe-3 truncate whitespace-nowrap overflow-hidden max-w-[250px] lg:max-w-[500px] xs:pe-4 sm:pe-0 sm:max-w-[200px] md:max-w-[300px]">
                               {kirtan.title}
                             </h2>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-md text-gray-600">
                               {kirtan.author_name}
                             </p>
                           </div>
@@ -262,7 +232,7 @@ function HomePage() {
       </div>
       <div className="max-w-7xl w-full mx-auto">
         {!loading && totalPages > 0 && (
-          <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mb-8">
+          <div className="flex items-center justify-between border-t border-gray-200 bg-white py-4 sm:px-6">
             <div className="flex flex-1 justify-between sm:hidden">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -335,7 +305,7 @@ function HomePage() {
                         onClick={() => handlePageChange(page)}
                         className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                           currentPage === page
-                            ? "z-10 bg-indigo-600 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            ? "z-10 bg-[#c05e36] text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                         }`}
                         aria-current={currentPage === page ? "page" : undefined}

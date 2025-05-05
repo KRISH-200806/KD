@@ -35,10 +35,7 @@ function Sidebar({ isOpenSidebar, toggleSidebar }) {
 
         <nav className="p-4 mt-4">
           <ul className="mt-2 space-y-5 flex flex-col">
-            <li className="flex items-center gap-3 hover:text-[#c05e36] transition-colors">
-              <FaPaintBrush className="w-5 h-5" />
-              <Link to="#">Theme</Link>
-            </li>
+            
             <li className="flex items-center gap-3 hover:text-[#c05e36] transition-colors">
               <FaTextHeight className="w-5 h-5" />
               <Link to="#">Text Size</Link>
@@ -77,10 +74,7 @@ function Sidebar({ isOpenSidebar, toggleSidebar }) {
               <TbMessage className="w-5 h-5" />
               <Link to="/contact">Contact Us</Link>
             </li>
-            <li className="flex items-center gap-3 hover:text-[#c05e36] transition-colors">
-              <TbShieldLock className="w-5 h-5" />
-              <Link to="#">Privacy Policy</Link>
-            </li>
+           
           </ul>
         </nav>
       </div>

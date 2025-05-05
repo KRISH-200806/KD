@@ -115,6 +115,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { BsChevronDown } from "react-icons/bs";
 
 function Filterbar({ selectedFilters, setSelectedFilters }) {
   const [apiData, setApiData] = useState({});
@@ -171,13 +172,13 @@ function Filterbar({ selectedFilters, setSelectedFilters }) {
   if (error) return <div className="text-center p-4 text-red-600">{error}</div>;
 
   return (
-    <div className="max-w-7xl w-full mx-auto mt-5">
+    <div className="max-w-7xl w-full mx-auto">
       {/* Select Dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
         {Object.entries(apiData).map(([categoryCode, categoryData]) => (
-          <div className="w-full" key={categoryCode}>
+          <div className="relative w-full" key={categoryCode}>
             <select
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 pr-10 rounded-full outline-none appearance-none"
               value={selectedFilters[categoryCode] || ""}
               onChange={(e) => handleFilterChange(categoryCode, e.target.value)}
             >
@@ -191,12 +192,15 @@ function Filterbar({ selectedFilters, setSelectedFilters }) {
                 </option>
               ))}
             </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <BsChevronDown />
+            </div>
           </div>
         ))}
       </div>
 
       {/* Active Filters Display */}
-      <div className="flex flex-wrap gap-2 mt-4">
+      <div className="flex flex-wrap gap-2 mt-2">
         {Object.entries(selectedFilters).map(
           ([categoryCode, subCategoryCode]) =>
             subCategoryCode && (

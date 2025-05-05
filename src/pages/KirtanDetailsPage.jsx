@@ -19,7 +19,7 @@ function KirtanDetailsPage() {
         setLoading(true);
         const response = await axios.get(
           `https://kirtanavali.ssgd.org/api/get-kirtans-details/${song_code}`
-        );
+        );            
         console.log(response.data.response.songs_in_playlists);
         setSinglekirtan(response.data.response.songs_in_playlists);
         setCurrentContent(response.data.song); // song key પરથી value શરુમાં બતાવવી

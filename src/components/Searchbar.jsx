@@ -4,7 +4,7 @@ import { AiOutlineAudio } from "react-icons/ai";
 
 function Searchbar({ searchTerm, setSearchTerm }) {
   return (
-    <div className="bg-[#f8f1ee] pt-6 pb-4 px-4 ">
+    <div className="bg-[#f8f1ee] pt-6 pb-4">
       <div className="mx-auto max-w-7xl flex items-center justify-between px-6 bg-white py-2 rounded-full shadow-sm">
         <div className="w-5 h-5 text-[#c05e36] hover:scale-110 transition-transform duration-200 cursor-pointer">
           <IoSearchOutline className="w-5 h-5" />
