@@ -174,6 +174,11 @@ console.log(selectedLetter);
     return { start, end };
   };
 
+   const handleLetterClick = (letter) => {
+     setSelectedLetter((prevLetter) => (prevLetter === letter ? "" : letter));
+     setCurrentPage(1); // Reset to first page when filter changes
+   };
+
   return (
     <div className="flex flex-col">
       <Navbar
@@ -235,10 +240,7 @@ console.log(selectedLetter);
             {/* Tailwind Pagination Component */}
           </div>
           <AlphabetScroll
-            onLetterClick={(letter) => {
-              setCurrentPage(1); // Reset to first page when letter changes
-              setSelectedLetter(letter);
-            }}
+            onLetterClick={handleLetterClick}
             selectedLetter={selectedLetter}
           />
         </div>
