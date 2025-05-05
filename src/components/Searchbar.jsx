@@ -2,7 +2,7 @@ import React from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { AiOutlineAudio } from "react-icons/ai";
 
-function Searchbar() {
+function Searchbar({ searchTerm, setSearchTerm }) {
   return (
     <div className="bg-[#f8f1ee] pt-6 pb-4 px-4 ">
       <div className="mx-auto max-w-7xl flex items-center justify-between px-6 bg-white py-2 rounded-full shadow-sm">
@@ -14,6 +14,8 @@ function Searchbar() {
           <input
             type="text"
             placeholder="કિર્તન શોધો"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-transparent outline-none w-[95%] text-[#c05e36] placeholder-[#c05e36] focus:ring-0 xs:ps-4 sm:ps-2"
           />
         </div>

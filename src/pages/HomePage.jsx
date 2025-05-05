@@ -70,9 +70,15 @@ function HomePage() {
   const [totalItems, setTotalItems] = useState(0);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [selectedLetter, setSelectedLetter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const itemsPerPage = 30;
-  const getKirtanList = async (page = 1, filters = {}, selectedLetter = "") => {
+  const getKirtanList = async (
+    page = 1,
+    filters = {},
+    selectedLetter = "",
+    search = ""
+  ) => {
     try {
       setLoading(true);
 
@@ -84,6 +90,9 @@ function HomePage() {
       }
       if (selectedLetter) {
         query += `&letter=${selectedLetter}`;
+      }
+      if (search) {
+        query += `&search=${encodeURIComponent(search)}`; // Assuming API accepts this
       }
       const response = await axios.get(
         `https://kirtanavali.ssgd.org/api/get-kirtans${query}`
@@ -104,8 +113,8 @@ function HomePage() {
   };
 
   useEffect(() => {
-    getKirtanList(currentPage, selectedFilters, selectedLetter);
-  }, [currentPage, selectedFilters, selectedLetter]);
+    getKirtanList(currentPage, selectedFilters, selectedLetter, searchTerm);
+  }, [currentPage, selectedFilters, selectedLetter, searchTerm]);
 
   console.log(selectedLetter);
   const handlePageChange = (newPage) => {
@@ -189,7 +198,7 @@ function HomePage() {
       <Sidebar isOpenSidebar={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       <div className="w-full flex-grow bg-[#f8f1ee] overflow-y-auto h-[80vh] hide-scrollbar">
-        <Searchbar />
+        <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <hr className="h-[2px] w-full max-w-7xl mx-auto bg-slate-200" />
         <Filterbar
           selectedFilters={selectedFilters}
