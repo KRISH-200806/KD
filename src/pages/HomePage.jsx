@@ -69,7 +69,7 @@ function HomePage() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [selectedFilters, setSelectedFilters] = useState({});
-   const [selectedLetter, setSelectedLetter] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState("");
 
   const itemsPerPage = 30;
   const getKirtanList = async (page = 1, filters = {}, selectedLetter = "") => {
@@ -103,11 +103,11 @@ function HomePage() {
     }
   };
 
- useEffect(() => {
-   getKirtanList(currentPage, selectedFilters, selectedLetter);
- }, [currentPage, selectedFilters, selectedLetter]);
+  useEffect(() => {
+    getKirtanList(currentPage, selectedFilters, selectedLetter);
+  }, [currentPage, selectedFilters, selectedLetter]);
 
-console.log(selectedLetter);
+  console.log(selectedLetter);
   const handlePageChange = (newPage) => {
     console.log("Changing to page:", newPage);
     if (newPage >= 1 && newPage <= totalPages) {
@@ -174,10 +174,10 @@ console.log(selectedLetter);
     return { start, end };
   };
 
-   const handleLetterClick = (letter) => {
-     setSelectedLetter((prevLetter) => (prevLetter === letter ? "" : letter));
-     setCurrentPage(1); // Reset to first page when filter changes
-   };
+  const handleLetterClick = (letter) => {
+    setSelectedLetter((prevLetter) => (prevLetter === letter ? "" : letter));
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
 
   return (
     <div className="flex flex-col">
@@ -197,7 +197,13 @@ console.log(selectedLetter);
         />
         <div className="flex flex-1 w-full max-w-7xl mx-auto mt-5">
           <div className="w-full">
-            <div className="bg-slate-200 w-full max-w-[80rem] rounded-full mx-auto h-10 sticky z-30 top-0"></div>
+            <div className="bg-slate-200 w-full max-w-[80rem] rounded-full mx-auto h-10 sticky z-30 top-0 flex items-center">
+              {kirtans.length > 0 && (
+                <p className="text-lg font-semibold bg-white p-1 rounded-full ms-6 w-10 h-10 flex items-center justify-center">
+                  <p>{kirtans[0].first_character}</p>
+                </p>
+              )}
+            </div>
 
             <div className="p-4">
               {loading ? (

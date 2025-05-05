@@ -15,25 +15,25 @@ function Navbar({ isOpenSidebar, toggleSidebar }) {
   const [activeLang, setActiveLang] = useState("en");
   const [activefont, setActivefont] = useState("-");
   const [isOpen, setIsOpen] = useState(false);
-const dropdownRefs = useRef({});
+  const dropdownRefs = useRef({});
   const dropdownMenuRefs = useRef({});
   const [openDropdown, setOpenDropdown] = useState(null);
   useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (
-          openDropdown &&
-          !dropdownRefs.current[openDropdown]?.contains(event.target) &&
-          !dropdownMenuRefs.current[openDropdown]?.contains(event.target)
-        ) {
-          setOpenDropdown(null);
-        }
-      };
-  
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [openDropdown]);
+    const handleClickOutside = (event) => {
+      if (
+        openDropdown &&
+        !dropdownRefs.current[openDropdown]?.contains(event.target) &&
+        !dropdownMenuRefs.current[openDropdown]?.contains(event.target)
+      ) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
 
   return (
     <div className="bg-[#f8f1ee] shadow-md sticky z-50 xs:top-0 sm:top-0 ">
@@ -82,7 +82,6 @@ const dropdownRefs = useRef({});
             >
               {/* Menu Content */}
               <ul className="mt-2 space-y-5 flex flex-col">
-                
                 <li className="flex items-center gap-3 hover:text-[#c05e36] transition-colors">
                   <FaTextHeight className="w-5 h-5" />
                   <Link to="#">Text Size</Link>
@@ -121,7 +120,6 @@ const dropdownRefs = useRef({});
                   <TbMessage className="w-5 h-5" />
                   <Link to="/contact">Contact Us</Link>
                 </li>
-                
               </ul>
             </div>
           )}

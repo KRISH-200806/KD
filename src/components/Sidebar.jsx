@@ -2,9 +2,14 @@ import { Link } from "react-router-dom";
 import logo from "/public/assets/logo.png";
 import { useState } from "react";
 import { FaPaintBrush, FaTextHeight } from "react-icons/fa";
-import { TbInfoCircle, TbMessage, TbShare3, TbShieldLock } from "react-icons/tb";
+import {
+  TbInfoCircle,
+  TbMessage,
+  TbShare3,
+  TbShieldLock,
+} from "react-icons/tb";
 function Sidebar({ isOpenSidebar, toggleSidebar }) {
-    const [activefont, setActivefont] = useState("-");
+  const [activefont, setActivefont] = useState("-");
   return (
     <>
       <div

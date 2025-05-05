@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 import axios from "axios";
 
 function KirtanDetailsPage() {
-  
   const { song_code } = useParams();
   const [singlekirtan, setSinglekirtan] = useState(null);
   const [activePad, setActivePad] = useState(1);
@@ -18,7 +17,9 @@ function KirtanDetailsPage() {
     const fetchKirtan = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://kirtanavali.ssgd.org/api/get-kirtans-details/${song_code}`);
+        const response = await axios.get(
+          `https://kirtanavali.ssgd.org/api/get-kirtans-details/${song_code}`
+        );
         console.log(response.data.response.songs_in_playlists);
         setSinglekirtan(response.data.response.songs_in_playlists);
         setCurrentContent(response.data.song); // song key પરથી value શરુમાં બતાવવી
@@ -47,12 +48,12 @@ function KirtanDetailsPage() {
   const totalPads = singlekirtan.total_pads;
   const currentPad = singlekirtan.current_pad;
 
-const handlePadChange = (padNumber) => {
-  setActivePad(padNumber);
-  if (singlekirtan?.lyrics_en?.pad_content?.[padNumber - 1]) {
-    setCurrentContent(singlekirtan.pad_content[padNumber - 1]);
-  }
-};
+  const handlePadChange = (padNumber) => {
+    setActivePad(padNumber);
+    if (singlekirtan?.lyrics_en?.pad_content?.[padNumber - 1]) {
+      setCurrentContent(singlekirtan.pad_content[padNumber - 1]);
+    }
+  };
 
   // Generate pad buttons dynamically
   const renderPadButtons = () => {
