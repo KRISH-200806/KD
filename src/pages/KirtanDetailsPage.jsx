@@ -8,7 +8,8 @@ import Footer from "../components/Footer";
 import axios from "axios";
 
 function KirtanDetailsPage() {
-  const { id } = useParams();
+  
+  const { song_code } = useParams();
   const [singlekirtan, setSinglekirtan] = useState(null);
   const [activePad, setActivePad] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -17,11 +18,11 @@ function KirtanDetailsPage() {
     const fetchKirtan = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:3000/kirtans/${id}`);
-        console.log(res.data);
-        setSinglekirtan(res.data);
-        setCurrentContent(res.data.song); // song key પરથી value શરુમાં બતાવવી
-        setActivePad(res.data.current_pad); // default pad
+        const response = await axios.get(`https://kirtanavali.ssgd.org/api/get-kirtans-details/${song_code}`);
+        console.log(response.data.response.songs_in_playlists);
+        setSinglekirtan(response.data.response.songs_in_playlists);
+        setCurrentContent(response.data.song); // song key પરથી value શરુમાં બતાવવી
+        setActivePad(response.data.current_pad); // default pad
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -30,7 +31,7 @@ function KirtanDetailsPage() {
     };
 
     fetchKirtan();
-  }, [id]);
+  }, [song_code]);
 
   if (loading) {
     return <div className="p-4 text-center">Loading...</div>;
@@ -48,7 +49,7 @@ function KirtanDetailsPage() {
 
 const handlePadChange = (padNumber) => {
   setActivePad(padNumber);
-  if (singlekirtan?.pad_content?.[padNumber - 1]) {
+  if (singlekirtan?.lyrics_en?.pad_content?.[padNumber - 1]) {
     setCurrentContent(singlekirtan.pad_content[padNumber - 1]);
   }
 };
@@ -86,7 +87,7 @@ const handlePadChange = (padNumber) => {
             <BsArrowLeft className="w-5 h-5 text-[#c05e36]" />
           </Link>
           <h1 className="xs:text-xl sm:text-2xl font-bold text-[#c05e36] text-center m-auto">
-            {singlekirtan.title}
+            {singlekirtan.title_en}
           </h1>
           <span className="flex float-end">
             <FaRegStar className="text-[#c05e36] w-5 h-5" />
@@ -96,8 +97,8 @@ const handlePadChange = (padNumber) => {
           {renderPadButtons()}
         </div>
         <div className="max-w-7xl w-full mx-auto mt-5 bg-white rounded-2xl">
-          <p className="font-gujarati2 text-2xl text-justify flex justify-center md:w-2/3 md:mx-auto p-6">
-            {singlekirtan.song && currentContent}
+          <p className="font-gujarati2 text-2xl flex justify-center md:w-2/3 md:mx-auto p-6">
+            {singlekirtan.lyrics_en}
           </p>
         </div>
         <div className="grid sm:grid-cols-1 xs:grid-cols-1 md:grid-cols-2 gap-4 mt-3">

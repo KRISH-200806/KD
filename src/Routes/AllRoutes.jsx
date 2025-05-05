@@ -10,7 +10,7 @@ function AllRoutes() {
           <Routes>
               <Route path='/' element={<HomePage/>}></Route>
               <Route path='/contact' element={<ContactPage/>}></Route>
-              <Route path='/kirtan/:id' element={<KirtanDetailsPage/>}></Route>
+              <Route path='/kirtan/:song_code' element={<KirtanDetailsPage/>}></Route>
           </Routes>
     </div>
   )

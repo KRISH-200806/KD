@@ -2,29 +2,26 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
-
 const KirtanList = () => {
+  const [kirtans, setKirtans] = useState([]);
 
-  const [kirtans, setkirtans] = useState([])
-  
-  const getkirtanlist = async () => {
+  const getKirtanList = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/kirtans");
-      console.log(res.data);
-      setkirtans(res.data);
+      const response = await axios.get(
+        "https://kirtanavali.ssgd.org/api/get-kirtans"
+      );
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getkirtanlist()
-  }, [])
-  
+    getKirtanList();
+  }, []);
 
   return (
-    <div className="flex-1 ">
+    <div className="flex-1">
       <div className="p-4">
         <ul className="divide-y divide-gray-200 space-y-2">
           {kirtans.map((kirtan) => (
@@ -41,7 +38,6 @@ const KirtanList = () => {
                     <h2 className="font-gujarati2 pe-3 truncate whitespace-nowrap overflow-hidden max-w-[250px] lg:max-w-[500px] xs:pe-4 sm:pe-0 sm:max-w-[200px] md:max-w-[300px]">
                       {kirtan.title}
                     </h2>
-
                     <p className="text-sm text-gray-600">{kirtan.author}</p>
                   </div>
                 </div>
@@ -53,7 +49,6 @@ const KirtanList = () => {
           ))}
         </ul>
       </div>
-      <div>pagination</div>
     </div>
   );
 };

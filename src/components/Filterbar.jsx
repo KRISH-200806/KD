@@ -1,497 +1,222 @@
-import React, { useState } from "react";
+// import axios from "axios";
+// import { useState, useEffect } from "react";
+// import { X } from "lucide-react";
 
-function Filterbar() {
-  const locations = ["ગઢપુર", "વીરપુર", "ભૂજ"];
-  const adjectives = ["મીઠું", "મધુર", "વિચિત્ર"];
-  const specialNames = ["ઘનશ્યામ", "નારાયણ", "હરિપ્રસાદ"];
-  const books = ["ભાગવત", "વચનામૃત", "સત્સંગી જીવન"];
-  const emotions = ["સ્નેહ", "શાંતિ", "ભક્તિ"];
+// function Filterbar({ selectedFilters, setSelectedFilters }) {
+//   const [apiData, setApiData] = useState({});
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+  
 
-  const [activeAccordions, setActiveAccordions] = useState({
-    creator: true,
-    occasion: true,
-    type: true,
-    location: true,
-    adjective: true,
-    specialName: true,
-    book: true,
-    emotion: true,
-  });
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
+//         const response = await axios.get(
+//           "https://kirtanavali.ssgd.org/api/category-data"
+//         );
+//         const data = response.data.response.data;
+//         setApiData(data);
 
-  const toggleAccordion = (section) => {
-    setActiveAccordions((prev) => ({
+//         // Initialize selectedFilters object with empty values
+//        const initialFilters = {};
+//        for (const key of Object.keys(data)) {
+//          initialFilters[key] = selectedFilters[key] || "";
+//        }
+//        setSelectedFilters(initialFilters);
+
+//         setLoading(false);
+//       } catch (err) {
+//         setError("Error fetching data", err);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   const handleFilterChange = (categoryCode, value) => {
+//     setSelectedFilters((prev) => ({
+//       ...prev,
+//       [categoryCode]: value,
+//     }));
+//   };
+
+//   const removeFilter = (categoryCode) => {
+//     setSelectedFilters((prev) => ({
+//       ...prev,
+//       [categoryCode]: "",
+//     }));
+//   };
+
+//   const getSubCategoryName = (categoryCode, subCategoryCode) => {
+//     const subCategory = apiData[categoryCode]?.subcategories.find(
+//       (sc) => sc.sub_category_code === subCategoryCode
+//     );
+//     return subCategory?.sub_category_name || "";
+//   };
+
+//   if (loading) return <div className="text-center p-4">Loading...</div>;
+//   if (error) return <div className="text-center p-4 text-red-600">{error}</div>;
+
+//   return (
+//     <div className="max-w-7xl w-full mx-auto mt-5">
+//       {/* Dynamic Select Boxes */}
+//       <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-6">
+//         {Object.entries(apiData).map(([categoryCode, categoryData]) => (
+//           <div className="w-full" key={categoryCode}>
+//             <select
+//               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+//               value={selectedFilters[categoryCode] || ""}
+//               onChange={(e) => handleFilterChange(categoryCode, e.target.value)}
+//             >
+//               <option value="">{categoryData.category_name}</option>
+//               {categoryData.subcategories.map((subCategory) => (
+//                 <option
+//                   key={subCategory.sub_category_code}
+//                   value={subCategory.sub_category_code}
+//                 >
+//                   {subCategory.sub_category_name}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Selected Filters Display */}
+//       <div className="flex flex-wrap gap-2 mt-4">
+//         {Object.entries(selectedFilters).map(
+//           ([categoryCode, subCategoryCode]) =>
+//             subCategoryCode ? (
+//               <div
+//                 key={categoryCode}
+//                 className="flex items-center bg-blue-100 px-3 py-1 rounded-full text-sm"
+//               >
+//                 <span className="mr-2">
+//                   {getSubCategoryName(categoryCode, subCategoryCode)}
+//                 </span>
+//                 <button
+//                   onClick={() => removeFilter(categoryCode)}
+//                   className="text-gray-600 hover:text-red-600 focus:outline-none"
+//                   aria-label="Remove filter"
+//                 >
+//                   <X size={16} />
+//                 </button>
+//               </div>
+//             ) : null
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Filterbar;
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+
+function Filterbar({ selectedFilters, setSelectedFilters }) {
+  const [apiData, setApiData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          "https://kirtanavali.ssgd.org/api/category-data"
+        );
+        const data = response.data.response.data;
+        setApiData(data);
+
+        const initialFilters = {};
+        for (const key of Object.keys(data)) {
+          initialFilters[key] = selectedFilters[key] || "";
+        }
+        setSelectedFilters(initialFilters);
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching filter data.",err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleFilterChange = (categoryCode, value) => {
+    setSelectedFilters((prev) => ({
       ...prev,
-      [section]: !prev[section],
+      [categoryCode]: value,
     }));
   };
+
+  const removeFilter = (categoryCode) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [categoryCode]: "",
+    }));
+  };
+
+  const getSubCategoryName = (categoryCode, subCategoryCode) => {
+    const subCategory = apiData[categoryCode]?.subcategories.find(
+      (sc) => sc.sub_category_code === subCategoryCode
+    );
+    return subCategory?.sub_category_name || "";
+  };
+
+  if (loading) return <div className="text-center p-4">Loading filters...</div>;
+  if (error) return <div className="text-center p-4 text-red-600">{error}</div>;
+
   return (
-    <div className="w-80 h-[80vh] sticky top-0 z-30 bg-white shadow-xl p-2 rounded-lg hidden xs:hidden sm:hidden md:flex flex-col">
-      <div className="overflow-y-auto h-full hide-scrollbar ">
-        {/* Creator Section */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("creator")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
+    <div className="max-w-7xl w-full mx-auto mt-5">
+      {/* Select Dropdowns */}
+      <div className="grid grid-cols-1 md:grid-cols-6 gap-5 mb-6">
+        {Object.entries(apiData).map(([categoryCode, categoryData]) => (
+          <div className="w-full" key={categoryCode}>
+            <select
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedFilters[categoryCode] || ""}
+              onChange={(e) => handleFilterChange(categoryCode, e.target.value)}
             >
-              <span>રચયિતા</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.creator ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
+              <option value="">{categoryData.category_name}</option>
+              {categoryData.subcategories.map((subCategory) => (
+                <option
+                  key={subCategory.sub_category_code}
+                  value={subCategory.sub_category_code}
+                >
+                  {subCategory.sub_category_name}
+                </option>
+              ))}
+            </select>
           </div>
+        ))}
+      </div>
 
-          {activeAccordions.creator && (
-            <div className="px-3 py-3">
-              <select className="w-full p-2 border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300">
-                <option value="">બ્રહ્માનંદ સ્વામી</option>
-                <option value="prem">પ્રેમાનંદ સ્વામી</option>
-                <option value="mukta">મુક્તાનંદ સ્વામી</option>
-                <option value="bhuma">ભૂમાનંદ સ્વામી</option>
-                <option value="siddha">સિદ્ધાનંદ સ્વામી</option>
-                <option value="deva">દેવાનંદ સ્વામી</option>
-                <option value="avinash">અવિનાશાનંદ સ્વામી</option>
-                <option value="manjuk">મંજુકેશાનંદ સ્વામી</option>
-                <option value="daya">દયાનંદ સ્વામી</option>
-                <option value="dharma">ધર્માનંદ સ્વામી</option>
-                <option value="jagdish">જગદીશાનંદ સ્વામી</option>
-                <option value="nishkul">નિષ્કુળાનંદ સ્વામી</option>
-                <option value="krishna">કૃષ્ણાનંદ સ્વામી</option>
-                <option value="purna">પૂર્ણાનંદ સ્વામી</option>
-              </select>
-            </div>
-          )}
-        </div>
-
-        {/* Occasion Section */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("occasion")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>પ્રસંગ</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.occasion ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+      {/* Active Filters Display */}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {Object.entries(selectedFilters).map(
+          ([categoryCode, subCategoryCode]) =>
+            subCategoryCode && (
+              <div
+                key={categoryCode}
+                className="flex items-center bg-blue-100 px-3 py-1 rounded-full text-sm"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.occasion && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="diwali"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label
-                    htmlFor="diwali"
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    દિવાળી
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="holi"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label htmlFor="holi" className="ml-2 text-sm text-gray-700">
-                    હોળી
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="ekadashi"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label
-                    htmlFor="ekadashi"
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    એકાદશી
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="hindola"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label
-                    htmlFor="hindola"
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    હિંડોળા
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="rangotsav"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label
-                    htmlFor="rangotsav"
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    રંગોત્સવ
-                  </label>
-                </div>
+                <span className="mr-2">
+                  {getSubCategoryName(categoryCode, subCategoryCode)}
+                </span>
+                <button
+                  onClick={() => removeFilter(categoryCode)}
+                  className="text-gray-600 hover:text-red-600 focus:outline-none"
+                  aria-label="Remove filter"
+                >
+                  <X size={16} />
+                </button>
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Kirtan Type Section */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("type")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>કીર્તન પ્રકાર</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.type ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.type && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="sakhi"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label htmlFor="sakhi" className="ml-2 text-sm text-gray-700">
-                    સાખી
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="chandravala"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label
-                    htmlFor="chandravala"
-                    className="ml-2 text-sm text-gray-700"
-                  >
-                    ચંદ્રાવળા
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="duha"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label htmlFor="duha" className="ml-2 text-sm text-gray-700">
-                    દુહા-કુંડલીયા
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="chand"
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                  />
-                  <label htmlFor="chand" className="ml-2 text-sm text-gray-700">
-                    છંદ
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* LOCATION SECTION */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("location")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>સ્થાન</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.location ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.location && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                {locations.map((location, index) => (
-                  <div key={`location-${index}`} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`location-${index}`}
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                    />
-                    <label
-                      htmlFor={`location-${index}`}
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      {location}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ADJECTIVES SECTION */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("adjective")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>વિશેષણ</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.adjective ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.adjective && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                {adjectives.map((adjective, index) => (
-                  <div key={`adjective-${index}`} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`adjective-${index}`}
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                    />
-                    <label
-                      htmlFor={`adjective-${index}`}
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      {adjective}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* SPECIAL NAMES SECTION */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("specialName")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>વિશેષ નામ</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.specialName ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.specialName && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                {specialNames.map((name, index) => (
-                  <div key={`name-${index}`} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`name-${index}`}
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                    />
-                    <label
-                      htmlFor={`name-${index}`}
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      {name}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* BOOKS SECTION */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("book")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>પુસ્તક</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.book ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.book && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                {books.map((book, index) => (
-                  <div key={`book-${index}`} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`book-${index}`}
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                    />
-                    <label
-                      htmlFor={`book-${index}`}
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      {book}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* EMOTIONS SECTION */}
-        <div className="border-b border-gray-200 mb-2">
-          <div className="p-3 bg-[#f8f1ee]">
-            <button
-              onClick={() => toggleAccordion("emotion")}
-              className="w-full flex justify-between items-center text-left font-normal text-xl text-gray-800"
-            >
-              <span>ભાવ</span>
-              <svg
-                className={`w-5 h-5 transition-transform ${
-                  activeAccordions.emotion ? "transform rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {activeAccordions.emotion && (
-            <div className="px-3 py-3">
-              <div className="grid grid-cols-2 gap-2">
-                {emotions.map((emotion, index) => (
-                  <div key={`emotion-${index}`} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`emotion-${index}`}
-                      className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                    />
-                    <label
-                      htmlFor={`emotion-${index}`}
-                      className="ml-2 text-sm text-gray-700"
-                    >
-                      {emotion}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+            )
+        )}
       </div>
     </div>
   );
