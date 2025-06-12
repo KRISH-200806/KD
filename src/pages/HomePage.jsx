@@ -179,7 +179,7 @@ function HomePage() {
             <div className="bg-slate-200 w-full max-w-[80rem] mx-auto h-10 sticky z-30 top-0 flex items-center ">
               {kirtans.length > 0 && (
                 <p className="text-lg font-semibold bg-white p-1 rounded-full ms-6 w-8 h-8 flex items-center justify-center">
-                  <p>{kirtans[0].first_character}</p>
+                  {kirtans[0].first_character}
                 </p>
               )}
             </div>
